@@ -106,4 +106,19 @@ class CustomerTest extends TestCase
 
         $this->assertEquals(0, Customer::where('name', 'John Doe 5')->count());
     }
+
+    public function test_invalid_budget_parameter()
+    {
+        $response = $this->post(route('customer.store'), [
+            'name' => 'John Doe 6',
+            'phone_number' => '0123456789',
+            'email_address' => 'john.doe.6@gmail.com',
+            'budget' => -45675, // Negative value checking
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertSessionHasErrors(['budget']);
+
+        $this->assertEquals(0, Customer::where('name', 'John Doe 6')->count());
+    }
 }
