@@ -3,6 +3,8 @@
 
     <BreezeValidationErrors class="mb-4" />
 
+    <FlashMessage />
+
     <form @submit.prevent="submit">
         <div>
             <BreezeLabel for="name" value="Name" />
@@ -45,6 +47,7 @@ import BreezeTextarea from '@/Components/Textarea.vue'
 import BreezeLabel from '@/Components/Label.vue'
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import FlashMessage from '@/Components/FlashMessage.vue'
 
 export default {
     layout: BreezeGuestLayout,
@@ -57,6 +60,7 @@ export default {
         BreezeValidationErrors,
         Head,
         Link,
+        FlashMessage
     },
 
     data() {
@@ -71,5 +75,12 @@ export default {
         }
     },
 
+    methods: {
+        submit() {
+            this.form.post(route('customer.store'), {
+                onSuccess: () => this.form.reset(),
+            })
+        }
+    }
 }
 </script>
