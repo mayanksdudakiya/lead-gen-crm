@@ -26,6 +26,7 @@ Route::get('/', function () {
 });
 
 Route::get('/customer', [CustomerController::class, 'create'])->name('customer.get');
+Route::post('/customer', [CustomerController::class, 'store'])->name('customer.store');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
