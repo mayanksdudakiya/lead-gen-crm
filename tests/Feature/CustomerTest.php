@@ -61,4 +61,19 @@ class CustomerTest extends TestCase
 
         $this->assertEquals(0, Customer::where('email_address', 'john.doe.2@gmail.com')->count());
     }
+
+    public function test_email_address_parameter_is_required()
+    {
+        $response = $this->post(route('customer.store'), [
+            'name' => 'John Doe 3',
+            'phone_number' => '0123456789',
+            //'email_address' => 'john.doe.3@gmail.com',
+            'budget' => 45675,
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertSessionHasErrors(['email_address']);
+
+        $this->assertEquals(0, Customer::where('name', 'John Doe 3')->count());
+    }
 }
