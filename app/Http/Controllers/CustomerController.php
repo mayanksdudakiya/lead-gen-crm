@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCustomerRequest;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 

@@ -26,7 +26,7 @@ class AddCustomerRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
-            'email_address' => 'required|string|email|max:255|unique:contacts,email_address',
+            'email_address' => 'required|string|email|max:255|unique:customers,email_address',
             'budget' => 'required|numeric|gt:0',
             'message' => 'required|string',
         ];
