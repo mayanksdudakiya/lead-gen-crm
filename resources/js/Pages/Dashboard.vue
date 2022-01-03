@@ -28,8 +28,10 @@
                                 <td class="px-6 pt-6 pb-4" v-html="customer.email_address"></td>
                                 <td class="px-6 pt-6 pb-4" v-html="customer.budget"></td>
                                 <td class="px-6 pt-6 pb-4" v-html="customer.message"></td>
-                                <td class="px-6 pt-6 pb-4">
-                                    
+                                <td class="px-6 pt-6 pb-4" v-if="!customer.wp_user_id">
+                                    <BreezeButton class="ml-4" :class="{ 'opacity-25': processing }" :disabled="processing" @click.prevent="createWordpressUser(customer)">
+                                        Create WordPress Account
+                                    </BreezeButton>
                                 </td>
                             </tr>
                         </table>
@@ -45,17 +47,42 @@
 <script>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
 import { Head } from '@inertiajs/inertia-vue3';
-import Pagination from '@/Components/Pagination.vue'
+import Pagination from '@/Components/Pagination.vue';
+import BreezeButton from '@/Components/Button.vue'
 
 export default {
     components: {
         BreezeAuthenticatedLayout,
         Head,
-        Pagination
+        Pagination,
+        BreezeButton
     },
 
     props: {
         customers: Object
     },
+
+    data() {
+        return {
+            processing: false
+        }
+    },
+
+    methods: {
+        createWordpressUser(customer) {
+            
+            let $this = this;
+
+            this.processing = true;
+
+            this.$inertia.post(this.route('create.wordpress.user'), customer, {
+                onFinish: (data) => {
+                    $this.processing = false;
+                    console.log(data.data.wp_user_id);
+                    $this.$inertia.get(this.route('dashboard'));
+                }
+            });
+        }
+    }
 }
 </script>

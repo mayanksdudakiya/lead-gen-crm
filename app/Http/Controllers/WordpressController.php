@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Repositories\Customers\CustomerRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
 
 class WordpressController extends Controller
 {
@@ -15,7 +16,8 @@ class WordpressController extends Controller
         // These data can be validated through seperate request   
         $request->request->add([
             'username' => env( 'SITE_USERNAME' ),
-            'password' => env( 'SITE_PASSWORD' )
+            'password' => env( 'SITE_PASSWORD' ),
+            'profile_url' => route('customer.show', $request->id)
         ]);
 
         $response = Http::post("{$siteUrl}/wp-json/el/v1/user", $request->all());
@@ -26,6 +28,8 @@ class WordpressController extends Controller
              $wpUserId = $responseData->data->wp_user_id;
          
              $repo->updateWordpressUserId($request, $wpUserId);
+
+             return Redirect::route('dashboard')->with('success', 'User successfully created in WordPress');
          endif;
 
         return $response->body(); 
