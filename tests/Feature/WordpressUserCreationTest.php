@@ -92,4 +92,38 @@ class WordpressUserCreationTest extends TestCase
                  ->etc()
         );
     }
+
+    public function test_a_email_address_is_required_parameter()
+    {
+        $response = $this->post(route('create.wordpress.user'), [
+            'name' => 'John Doe',
+            'phone_number' => '0123456789',
+            //'email_address' => 'test@example.com',
+            'budget' => 45675,
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->where('code', 'rest_missing_callback_param')
+                 ->where('message', 'Missing parameter(s): email_address')
+                 ->etc()
+        );
+    }
+
+    public function test_invalid_email_address()
+    {
+        $response = $this->post(route('create.wordpress.user'), [
+            'name' => 'John Doe',
+            'phone_number' => '0123456789',
+            'email_address' => 'john.doe',
+            'budget' => 45675,
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->where('code', 'rest_invalid_param')
+                 ->where('message', 'Invalid parameter(s): email_address')
+                 ->etc()
+        );
+    }
 }
