@@ -3,19 +3,15 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CustomerTest extends TestCase
-{
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+{   
+    use RefreshDatabase;
+
+    public function test_customer_form_screen_can_be_rendered()
     {
-        $response = $this->get('/');
+        $response = $this->get(route('customer.get'));
 
         $response->assertStatus(200);
     }
