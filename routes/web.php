@@ -31,6 +31,7 @@ Route::post('/customer', [CustomerController::class, 'store'])->name('customer.s
 
 Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/customer/{customer}', [CustomerController::class, 'profile'])->name('customer.show');
 });
 
 require __DIR__.'/auth.php';
