@@ -57,6 +57,7 @@ class WordpressUserCreationTest extends TestCase
 
     /**
      * Make a real request to test the parameter validation
+     * as we have no rate limiter
      */
     public function test_a_name_is_required_parameter()
     {
@@ -71,6 +72,23 @@ class WordpressUserCreationTest extends TestCase
         $response->assertJson(fn (AssertableJson $json) =>
             $json->where('code', 'rest_missing_callback_param')
                  ->where('message', 'Missing parameter(s): name')
+                 ->etc()
+        );
+    }
+
+    public function test_a_phone_number_is_required_parameter()
+    {
+        $response = $this->post(route('create.wordpress.user'), [
+            'name' => 'John Doe',
+            //'phone_number' => '0123456789',
+            'email_address' => 'test@example.com',
+            'budget' => 45675,
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->where('code', 'rest_missing_callback_param')
+                 ->where('message', 'Missing parameter(s): phone_number')
                  ->etc()
         );
     }
