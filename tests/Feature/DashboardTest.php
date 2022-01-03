@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -18,7 +18,7 @@ class DashboardTest extends TestCase
         $this->seed([
             UserSeeder::class,
         ]);
-        
+
         // Create a user & authenticate to make request
         $user = User::factory()->create();
 
