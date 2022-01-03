@@ -76,4 +76,19 @@ class CustomerTest extends TestCase
 
         $this->assertEquals(0, Customer::where('name', 'John Doe 3')->count());
     }
+
+    public function test_invalid_email_address()
+    {
+        $response = $this->post(route('customer.store'), [
+            'name' => 'John Doe 4',
+            'phone_number' => '0123456789',
+            'email_address' => 'john.doe.4', // Invalid email address
+            'budget' => 45675,
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertSessionHasErrors(['email_address']);
+
+        $this->assertEquals(0, Customer::where('name', 'John Doe 4')->count());
+    }
 }
