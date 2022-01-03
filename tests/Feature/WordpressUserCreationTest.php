@@ -177,4 +177,21 @@ class WordpressUserCreationTest extends TestCase
                  ->etc()
         );
     }
+
+    /*public function test_duplicate_user_creation()
+    {
+        $response = $this->post(route('create.wordpress.user'), [
+            'name' => 'John Doe',
+            'phone_number' => '0123456789',
+            'email_address' => 'admin@gmail.com', // Should be existing email in WP
+            'budget' => 45675,
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->where('code', 'rest_user_already_exists')
+                 ->where('message', 'Sorry, This user has already been registered')
+                 ->etc()
+        );
+    }*/
 }
