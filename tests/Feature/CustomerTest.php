@@ -136,4 +136,19 @@ class CustomerTest extends TestCase
 
         $this->assertEquals(0, Customer::where('name', 'John Doe 7')->count());
     }
+
+    public function test_duplicate_customer_can_not_be_created()
+    {
+        $response = $this->post(route('customer.store'), [
+            'name' => 'John Doe 8',
+            'phone_number' => '0123456789',
+            'email_address' => 'john.doe@gmail.com', // Same email as first
+            'budget' => 45675,
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertSessionHasErrors(['email_address']);
+
+        $this->assertEquals(0, Customer::where('name', 'John Doe 8')->count());
+    }
 }
