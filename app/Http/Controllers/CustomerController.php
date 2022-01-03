@@ -26,4 +26,9 @@ class CustomerController extends Controller
 
         return Redirect::route('customer.get')->with('success', 'Your request has been successfully submitted.');
     }
+
+    public function profile(Customer $customer)
+    {
+        return Inertia::render('Customer/Profile', compact('customer'));
+    }
 }
