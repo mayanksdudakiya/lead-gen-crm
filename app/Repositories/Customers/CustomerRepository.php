@@ -20,4 +20,9 @@ class CustomerRepository
 
         $contact->save();
     }
+
+    public function findCustomerById($id)
+    {
+        return Customer::find($id);
+    }
 }

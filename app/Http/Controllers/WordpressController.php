@@ -12,7 +12,7 @@ class WordpressController extends Controller
     public function createUser(Request $request, CustomerRepository $repo)
     {
         $siteUrl = env('SITE_URL');
-		
+	
         // These data can be validated through seperate request   
         $request->request->add([
             'username' => env( 'SITE_USERNAME' ),

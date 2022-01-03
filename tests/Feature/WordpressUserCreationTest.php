@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Customer;
 use App\Models\User;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -60,13 +61,11 @@ class WordpressUserCreationTest extends TestCase
      */
     public function test_a_name_is_required_parameter()
     {
-        $response = $this->post(route('create.wordpress.user'), [
-            //'name' => 'John Doe',
-            'phone_number' => '0123456789',
-            'email_address' => 'test@example.com',
-            'budget' => 45675,
-            'message' => 'This is the test message',
-        ]);
+        $customer = Customer::factory()->create()->toArray();
+
+        unset($customer['name']);
+
+        $response = $this->post(route('create.wordpress.user'), $customer);
 
         $response->assertJson(fn (AssertableJson $json) =>
             $json->where('code', 'rest_missing_callback_param')
@@ -77,13 +76,11 @@ class WordpressUserCreationTest extends TestCase
 
     public function test_a_phone_number_is_required_parameter()
     {
-        $response = $this->post(route('create.wordpress.user'), [
-            'name' => 'John Doe',
-            //'phone_number' => '0123456789',
-            'email_address' => 'test@example.com',
-            'budget' => 45675,
-            'message' => 'This is the test message',
-        ]);
+        $customer = Customer::factory()->create()->toArray();
+
+        unset($customer['phone_number']);
+
+        $response = $this->post(route('create.wordpress.user'), $customer);
 
         $response->assertJson(fn (AssertableJson $json) =>
             $json->where('code', 'rest_missing_callback_param')
@@ -94,13 +91,11 @@ class WordpressUserCreationTest extends TestCase
 
     public function test_a_email_address_is_required_parameter()
     {
-        $response = $this->post(route('create.wordpress.user'), [
-            'name' => 'John Doe',
-            'phone_number' => '0123456789',
-            //'email_address' => 'test@example.com',
-            'budget' => 45675,
-            'message' => 'This is the test message',
-        ]);
+        $customer = Customer::factory()->create()->toArray();
+
+        unset($customer['email_address']);
+
+        $response = $this->post(route('create.wordpress.user'), $customer);
 
         $response->assertJson(fn (AssertableJson $json) =>
             $json->where('code', 'rest_missing_callback_param')
@@ -111,13 +106,11 @@ class WordpressUserCreationTest extends TestCase
 
     public function test_invalid_email_address()
     {
-        $response = $this->post(route('create.wordpress.user'), [
-            'name' => 'John Doe',
-            'phone_number' => '0123456789',
-            'email_address' => 'john.doe',
-            'budget' => 45675,
-            'message' => 'This is the test message',
-        ]);
+        $customer = Customer::factory()->create()->toArray();
+
+        $customer['email_address'] = 'john.doe';
+
+        $response = $this->post(route('create.wordpress.user'), $customer);
 
         $response->assertJson(fn (AssertableJson $json) =>
             $json->where('code', 'rest_invalid_param')
@@ -128,13 +121,11 @@ class WordpressUserCreationTest extends TestCase
 
     public function test_a_budget_is_required_parameter()
     {
-        $response = $this->post(route('create.wordpress.user'), [
-            'name' => 'John Doe',
-            'phone_number' => '0123456789',
-            'email_address' => 'test@example.com',
-            //'budget' => 45675,
-            'message' => 'This is the test message',
-        ]);
+        $customer = Customer::factory()->create()->toArray();
+
+        unset($customer['budget']);
+
+        $response = $this->post(route('create.wordpress.user'), $customer);
 
         $response->assertJson(fn (AssertableJson $json) =>
             $json->where('code', 'rest_missing_callback_param')
@@ -145,13 +136,11 @@ class WordpressUserCreationTest extends TestCase
 
     public function test_invalid_budget_parameter()
     {
-        $response = $this->post(route('create.wordpress.user'), [
-            'name' => 'John Doe',
-            'phone_number' => '0123456789',
-            'email_address' => 'john.doe@gmail.com',
-            'budget' => -45675,
-            'message' => 'This is the test message',
-        ]);
+        $customer = Customer::factory()->create()->toArray();
+
+        $customer['budget'] = -45678;
+
+        $response = $this->post(route('create.wordpress.user'), $customer);
 
         $response->assertJson(fn (AssertableJson $json) =>
             $json->where('code', 'rest_invalid_param')
@@ -162,13 +151,11 @@ class WordpressUserCreationTest extends TestCase
 
     public function test_a_message_is_required_parameter()
     {
-        $response = $this->post(route('create.wordpress.user'), [
-            'name' => 'John Doe',
-            'phone_number' => '0123456789',
-            'email_address' => 'test@example.com',
-            'budget' => 45675,
-            //'message' => 'This is the test message',
-        ]);
+        $customer = Customer::factory()->create()->toArray();
+
+        unset($customer['message']);
+
+        $response = $this->post(route('create.wordpress.user'), $customer);
 
         $response->assertJson(fn (AssertableJson $json) =>
             $json->where('code', 'rest_missing_callback_param')
