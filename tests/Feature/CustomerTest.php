@@ -15,4 +15,19 @@ class CustomerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_customer_can_created()
+    {
+        $response = $this->post(route('customer.store'), [
+            'name' => 'John Doe',
+            'phone_number' => '0123456789',
+            'email_address' => 'john.doe@gmail.com',
+            'budget' => 45675,
+            'message' => 'This is the test message',
+        ]);
+
+        $response->assertRedirect(route('customer.get'));
+
+        $this->assertDatabaseCount('customers', 1);
+    }
 }
